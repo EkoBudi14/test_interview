@@ -453,39 +453,49 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () async {
                     _keyController.currentState!.save();
                     if (_keyController.currentState!.validate()) {
-                      final dataQuot = Quatation(
-                        nomor: int.parse(nomorController.text),
-                        tanggal: tanggalController.text,
-                        namaPT: namaPtController.text,
-                        npwp: npwpController.text,
-                        picUser: piCUserController.text,
-                        picPosition: piCPositionController.text,
-                        contact: contactController.text,
-                        email: emailController.text,
-                        totalEmployee: int.parse(totalEmployeController.text),
-                        diskon: int.parse(diskonController.text),
-                        keterangan1: keterangan1Controller.text,
-                        hargaTrining: int.parse(hargaTriningController.text),
-                        diskonTrining: int.parse(diskonTriningController.text),
-                        keterangan2: keterangan2Controller.text,
-                        hargaImplementasi: int.parse(hargaImplementasi.text),
-                        diskonImplementasi:
-                            int.parse(diskonImplementasiController.text),
-                        keterangan3: keterangan3Controller.text,
-                        hargaModifikasi:
-                            int.parse(hargaModifikasiController.text),
-                        diskonModifikasi:
-                            int.parse(diskonModifikasiController.text),
-                        keterangan4: keterangan4Controller.text,
-                        emailSales: emailSalesController.text,
-                        billingPic: billingPicController.text,
-                        billingAddress: billingAddressController.text,
-                        billingContact: billingContactController.text,
-                        billingEmail: billingEmailController.text,
-                      );
-                      final data =
-                          await PdfServices().createdTestHello(dataQuot);
-                      PdfServices.savePdfFile(data);
+                      if (int.parse(totalEmployeController.text) <= 25) {
+                        _validate = true;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Minimal Employe harus 25'),
+                          ),
+                        );
+                      } else {
+                        final dataQuot = Quatation(
+                          nomor: int.parse(nomorController.text),
+                          tanggal: tanggalController.text,
+                          namaPT: namaPtController.text,
+                          npwp: npwpController.text,
+                          picUser: piCUserController.text,
+                          picPosition: piCPositionController.text,
+                          contact: contactController.text,
+                          email: emailController.text,
+                          totalEmployee: int.parse(totalEmployeController.text),
+                          diskon: int.parse(diskonController.text),
+                          keterangan1: keterangan1Controller.text,
+                          hargaTrining: int.parse(hargaTriningController.text),
+                          diskonTrining:
+                              int.parse(diskonTriningController.text),
+                          keterangan2: keterangan2Controller.text,
+                          hargaImplementasi: int.parse(hargaImplementasi.text),
+                          diskonImplementasi:
+                              int.parse(diskonImplementasiController.text),
+                          keterangan3: keterangan3Controller.text,
+                          hargaModifikasi:
+                              int.parse(hargaModifikasiController.text),
+                          diskonModifikasi:
+                              int.parse(diskonModifikasiController.text),
+                          keterangan4: keterangan4Controller.text,
+                          emailSales: emailSalesController.text,
+                          billingPic: billingPicController.text,
+                          billingAddress: billingAddressController.text,
+                          billingContact: billingContactController.text,
+                          billingEmail: billingEmailController.text,
+                        );
+                        final data =
+                            await PdfServices().createdTestHello(dataQuot);
+                        PdfServices.savePdfFile(data);
+                      }
                     }
                   },
                   child: Text("Generate PDF"),
@@ -506,40 +516,50 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () async {
                     _keyController.currentState!.save();
                     if (_keyController.currentState!.validate()) {
-                      final dataQuot = Quatation(
-                        nomor: int.parse(nomorController.text),
-                        tanggal: tanggalController.text,
-                        namaPT: namaPtController.text,
-                        npwp: npwpController.text,
-                        picUser: piCUserController.text,
-                        picPosition: piCPositionController.text,
-                        contact: contactController.text,
-                        email: emailController.text,
-                        totalEmployee: int.parse(totalEmployeController.text),
-                        diskon: int.parse(diskonController.text),
-                        keterangan1: keterangan1Controller.text,
-                        hargaTrining: int.parse(hargaTriningController.text),
-                        diskonTrining: int.parse(diskonTriningController.text),
-                        keterangan2: keterangan2Controller.text,
-                        hargaImplementasi: int.parse(hargaImplementasi.text),
-                        diskonImplementasi:
-                            int.parse(diskonImplementasiController.text),
-                        keterangan3: keterangan3Controller.text,
-                        hargaModifikasi:
-                            int.parse(hargaModifikasiController.text),
-                        diskonModifikasi:
-                            int.parse(diskonModifikasiController.text),
-                        keterangan4: keterangan4Controller.text,
-                        emailSales: emailSalesController.text,
-                        billingPic: billingPicController.text,
-                        billingAddress: billingAddressController.text,
-                        billingContact: billingContactController.text,
-                        billingEmail: billingEmailController.text,
-                      );
-                      final data =
-                          await PdfServices().createdTestHello(dataQuot);
-                      PdfServices.savePdfFileToSendEmail(data);
-                      PdfServices.send(emailSalesController.text);
+                      if (int.parse(totalEmployeController.text) <= 25) {
+                        _validate = true;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Minimal 25 Employe'),
+                          ),
+                        );
+                      } else {
+                        final dataQuot = Quatation(
+                          nomor: int.parse(nomorController.text),
+                          tanggal: tanggalController.text,
+                          namaPT: namaPtController.text,
+                          npwp: npwpController.text,
+                          picUser: piCUserController.text,
+                          picPosition: piCPositionController.text,
+                          contact: contactController.text,
+                          email: emailController.text,
+                          totalEmployee: int.parse(totalEmployeController.text),
+                          diskon: int.parse(diskonController.text),
+                          keterangan1: keterangan1Controller.text,
+                          hargaTrining: int.parse(hargaTriningController.text),
+                          diskonTrining:
+                              int.parse(diskonTriningController.text),
+                          keterangan2: keterangan2Controller.text,
+                          hargaImplementasi: int.parse(hargaImplementasi.text),
+                          diskonImplementasi:
+                              int.parse(diskonImplementasiController.text),
+                          keterangan3: keterangan3Controller.text,
+                          hargaModifikasi:
+                              int.parse(hargaModifikasiController.text),
+                          diskonModifikasi:
+                              int.parse(diskonModifikasiController.text),
+                          keterangan4: keterangan4Controller.text,
+                          emailSales: emailSalesController.text,
+                          billingPic: billingPicController.text,
+                          billingAddress: billingAddressController.text,
+                          billingContact: billingContactController.text,
+                          billingEmail: billingEmailController.text,
+                        );
+                        final data =
+                            await PdfServices().createdTestHello(dataQuot);
+                        PdfServices.savePdfFileToSendEmail(data);
+                        PdfServices.send(emailSalesController.text);
+                      }
                     }
                   },
                   child: Text("Send Email"),
