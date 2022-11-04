@@ -2,7 +2,7 @@ class Quatation {
   final int nomor;
   final String tanggal;
   final String namaPT;
-  final int npwp;
+  final String npwp;
   final String picUser;
   final String picPosition;
   final String contact;

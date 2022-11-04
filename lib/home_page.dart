@@ -3,8 +3,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:test_flutter/model.dart';
 import 'package:test_flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -52,13 +54,10 @@ class _HomePageState extends State<HomePage> {
   TextEditingController billingEmailController =
       TextEditingController(text: '');
 
-  // @override
-  // void initState() {
-  //   dateinput.text = ""; //set the initial value of text field
-  //   super.initState();
-  // }
   bool _validate = false;
   final _keyController = new GlobalKey<FormState>();
+  final maskText = new MaskTextInputFormatter(
+      mask: '##.###.###.#-###.###', filter: {"#": RegExp(r'[0-9]')});
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +70,13 @@ class _HomePageState extends State<HomePage> {
         child: Form(
           key: _keyController,
           child: Container(
-            margin: EdgeInsets.only(left: 10, right: 10, top: 15),
+            margin: EdgeInsets.only(left: 20, right: 20, top: 15),
             child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Quotation",style: TextStyle(fontSize: 20),
+                  "Quotation",
+                  style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
                   height: 20,
@@ -90,8 +90,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Nomor",
                       labelText: "Nomor",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -99,23 +98,22 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.only(bottom: 20),
                   child: TextFormField(
                     validator: (value) => value!.isEmpty ? 'Harus Diisi' : null,
-
                     controller:
                         tanggalController, //editing controller of this TextField
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0)),
+                        border: UnderlineInputBorder(),
                         labelText: "Enter Date" //label text of field
                         ),
                     readOnly:
                         true, //set it true, so that user will not able to edit text
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(
-                              2000), //DateTime.now() - not to allow to choose before today.
-                          lastDate: DateTime(2101));
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(
+                            2000), //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2101),
+                      );
 
                       if (pickedDate != null) {
                         print(
@@ -144,8 +142,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Nama PT",
                       labelText: "Nama PT",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -155,11 +152,13 @@ class _HomePageState extends State<HomePage> {
                     validator: (value) => value!.isEmpty ? 'Harus Diisi' : null,
                     keyboardType: TextInputType.number,
                     controller: npwpController,
+                    inputFormatters: [
+                      maskText,
+                    ],
                     decoration: new InputDecoration(
-                      hintText: "Masukan NPWP",
+                      hintText: "00.000.000.0-000.000",
                       labelText: "NPWP",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -171,8 +170,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan PIC User",
                       labelText: "PIC User",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -184,8 +182,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Mauskan PIC Position",
                       labelText: "PIC Position",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -198,8 +195,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Contact",
                       labelText: "Contact",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -211,8 +207,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Email",
                       labelText: "Email",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -238,9 +233,16 @@ class _HomePageState extends State<HomePage> {
                       labelText: "Total Employee",
                       errorText:
                           _validate ? 'Minimal Total Employe adalah 25' : null,
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
+                  ),
+                ),
+                Text(
+                  "*Minimal Employee 25",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Container(
@@ -252,8 +254,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Diskon",
                       labelText: "Diskon",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -264,8 +265,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Keterangan 1",
                       labelText: "Keterangan 1",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -278,8 +278,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Harga Trining",
                       labelText: "Harga Training",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -292,8 +291,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Diskon Training",
                       labelText: "Diskon Training",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -304,8 +302,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Keterangan 2",
                       labelText: "Keterangan 2",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -318,8 +315,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Harga Implementasi",
                       labelText: "Harga Implementasi",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -332,8 +328,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Diskon Implementasi",
                       labelText: "Diskon Implementasi",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -344,8 +339,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Keterangan 3",
                       labelText: "Keterangan 3",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -358,8 +352,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Harga Modifikasi",
                       labelText: "Harga Modifikasi",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -372,8 +365,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Diskon Modifikasi",
                       labelText: "Diskon Modifikasi",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -384,8 +376,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Keterangan 4",
                       labelText: "Keterangan 4",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -397,8 +388,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Email Sales",
                       labelText: "Email Sales",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -410,8 +400,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Billing PIC",
                       labelText: "Billing PIC",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -423,8 +412,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Billing Address",
                       labelText: "Billing Address",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -436,8 +424,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Billing contact",
                       labelText: "Billing contact",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
@@ -449,12 +436,20 @@ class _HomePageState extends State<HomePage> {
                     decoration: new InputDecoration(
                       hintText: "Masukan Billing Email",
                       labelText: "Billing Email",
-                      border: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
+                      border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    minimumSize: Size(double.infinity, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                  ),
                   onPressed: () async {
                     _keyController.currentState!.save();
                     if (_keyController.currentState!.validate()) {
@@ -462,7 +457,7 @@ class _HomePageState extends State<HomePage> {
                         nomor: int.parse(nomorController.text),
                         tanggal: tanggalController.text,
                         namaPT: namaPtController.text,
-                        npwp: int.parse(npwpController.text),
+                        npwp: npwpController.text,
                         picUser: piCUserController.text,
                         picPosition: piCPositionController.text,
                         contact: contactController.text,
@@ -499,6 +494,15 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    minimumSize: Size(double.infinity, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                  ),
                   onPressed: () async {
                     _keyController.currentState!.save();
                     if (_keyController.currentState!.validate()) {
@@ -506,7 +510,7 @@ class _HomePageState extends State<HomePage> {
                         nomor: int.parse(nomorController.text),
                         tanggal: tanggalController.text,
                         namaPT: namaPtController.text,
-                        npwp: int.parse(npwpController.text),
+                        npwp: npwpController.text,
                         picUser: piCUserController.text,
                         picPosition: piCPositionController.text,
                         contact: contactController.text,
@@ -539,6 +543,9 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                   child: Text("Send Email"),
+                ),
+                SizedBox(
+                  height: 40,
                 ),
               ],
             ),

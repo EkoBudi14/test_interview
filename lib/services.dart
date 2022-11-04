@@ -34,11 +34,11 @@ class PdfServices {
     var hargaPerKaryawan = total / quatation.totalEmployee;
     var setelahDiskon = total - (total * quatation.diskon / 100);
     var hargaTrinings = quatation.hargaTrining -
-        (quatation.hargaTrining * quatation.diskon / 100);
+        (quatation.hargaTrining * quatation.diskonTrining / 100);
     var hargaImplementasis = quatation.hargaImplementasi -
-        (quatation.hargaImplementasi * quatation.diskon / 100);
+        (quatation.hargaImplementasi * quatation.diskonImplementasi / 100);
     var hargaModifikasis = quatation.hargaModifikasi -
-        (quatation.hargaModifikasi * quatation.diskon / 100);
+        (quatation.hargaModifikasi * quatation.diskonModifikasi / 100);
 
     final f = new DateFormat('yyyy-MM-dd');
     final headers = [
@@ -108,6 +108,48 @@ class PdfServices {
                 ),
               ],
             ),
+            pw.SizedBox(
+              height: 30,
+            ),
+            pw.Row(children: [
+              pw.Column(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text(
+                    "Billing PIC:" + quatation.billingPic,
+                    style: pw.TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                  pw.Text(
+                    "Billing Address : " + quatation.billingAddress,
+                    // ignore: prefer_const_constructors
+                    style: pw.TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                  pw.Text(
+                    "Billing Contact : " + quatation.billingContact,
+                    style: pw.TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                  pw.Text(
+                    "Billing Email : " + quatation.billingEmail,
+                    style: pw.TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                  pw.Text(
+                    "Email Sales : " + quatation.emailSales,
+                    style: pw.TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ]),
             // pw.SizedBox(
             //   height: 13,
             // ),
@@ -159,7 +201,7 @@ class PdfServices {
                   quatation.keterangan3
                 ],
                 [
-                  'Total Modifikasi',
+                  'Harga Modifikasi',
                   'Rp.${NumberFormat.currency(
                     locale: "id",
                     name: '',
@@ -187,40 +229,9 @@ class PdfServices {
               child: pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Column(
-                    mainAxisAlignment: pw.MainAxisAlignment.start,
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Text(
-                        "Billing PIC:" + quatation.billingPic,
-                        style: pw.TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                      pw.Text(
-                        "Billing Address : " + quatation.billingAddress,
-                        // ignore: prefer_const_constructors
-                        style: pw.TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                      pw.Text(
-                        "Billing Contact : " + quatation.billingContact,
-                        style: pw.TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                      pw.Text(
-                        "Billing Email : " + quatation.billingEmail,
-                        style: pw.TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                  pw.Spacer(flex: 1),
+                  pw.Spacer(flex: 5),
                   pw.Expanded(
-                    flex: 2,
+                    flex: 6,
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
@@ -237,6 +248,7 @@ class PdfServices {
                                   ),
                                 ),
                               ),
+                              pw.Text('Rp.'),
                               pw.Text(NumberFormat.currency(
                                 locale: "id",
                                 name: '',
@@ -258,6 +270,7 @@ class PdfServices {
                                   ),
                                 ),
                               ),
+                              pw.Text('Rp.'),
                               pw.Text(NumberFormat.currency(
                                 locale: "id",
                                 name: '',
@@ -279,6 +292,7 @@ class PdfServices {
                                   ),
                                 ),
                               ),
+                              pw.Text('Rp.'),
                               pw.Text(NumberFormat.currency(
                                 locale: "id",
                                 name: '',
@@ -300,6 +314,7 @@ class PdfServices {
                                   ),
                                 ),
                               ),
+                              pw.Text('Rp.'),
                               pw.Text(NumberFormat.currency(
                                 locale: "id",
                                 name: '',
@@ -321,6 +336,7 @@ class PdfServices {
                                   ),
                                 ),
                               ),
+                              pw.Text('Rp.'),
                               pw.Text(NumberFormat.currency(
                                 locale: "id",
                                 name: '',
@@ -342,6 +358,7 @@ class PdfServices {
                                   ),
                                 ),
                               ),
+                              pw.Text('Rp.'),
                               pw.Text(NumberFormat.currency(
                                 locale: "id",
                                 name: '',
@@ -365,7 +382,7 @@ class PdfServices {
 
   static Future<void> savePdfFile(Uint8List byteList) async {
     final output = await getTemporaryDirectory();
-    var filePath = "${output.path}/documentPdf.pdf";
+    var filePath = "${output.path}/QuotationDocument.pdf";
     print(filePath);
     final file = File(filePath);
     await file.writeAsBytes(byteList);
@@ -374,7 +391,7 @@ class PdfServices {
 
   static Future<void> savePdfFileToSendEmail(Uint8List byteList) async {
     final output = await getTemporaryDirectory();
-    var filePath = "${output.path}/documentPdf.pdf";
+    var filePath = "${output.path}/QuotationDocument.pdf";
     print(filePath);
     final file = File(filePath);
     await file.writeAsBytes(byteList);
@@ -385,10 +402,11 @@ class PdfServices {
     final output = await getTemporaryDirectory();
 
     final Email email = Email(
-      body: 'Berikut Link Untuk E-sign \n https://www.sodapdf.com/id/sign-pdf/ ',
+      body:
+          'Berikut Link Untuk E-sign \n https://www.sodapdf.com/id/sign-pdf/ ',
       subject: 'Quotation PDF',
       recipients: [recipients],
-      attachmentPaths: ["${output.path}/documentPdf.pdf"],
+      attachmentPaths: ["${output.path}/QuotationDocument.pdf"],
       isHTML: true,
     );
 
